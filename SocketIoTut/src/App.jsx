@@ -1,22 +1,28 @@
 /* eslint-disable no-unused-vars */
-import { useEffect, useState } from 'react';
+import { use, useEffect, useState } from 'react';
 import Chat from './Chat/Chat.jsx';
 import Display from './Chat/Display/Display.jsx';
 import users from '../public/user.js';
 import useStore from './GlobalStore.js';
-import MainDb from '../IndexDb/index.js';
-import { ChatDB } from '../IndexDb/ChatDb.js';
-import { openChatDB } from '../IndexDb/Onupdatedversion.js';
 import { chatDB2 } from '../IndexDb/NewDb/Chat.js';
+import { chatDetailDb } from '../IndexDb/chatDetailDb.js';
+import { userDb } from '../IndexDb/user.js';
 
-function AskToChat({ setCreRoom }) {
+function AskToChat({ setCreRoom,creRoom,userB,userA}) {
+  const chatdetails={
+     _id:crypto.randomUUID(),
+     participants:[userA,userB],
+     LastMessage:null,
+     LastTimestamp:null,
+
+  }
   return (
     <div className='fixed top-0 right-0 z-20 '>
       <button
         onClick={() => setCreRoom(true)}
         className='bg-red-500 h-[20px] w-[20px text-2xl font-extrabold text-lime-600'
       >
-        Want To chat ?
+        
       </button>
     </div>
   )
@@ -34,34 +40,19 @@ function App() {
     setSelectedUser((prev) => (prev === user ? null : user));
   };
   useEffect(() => {
-    // MainDb();
-    //     ChatDB.init();
-    //     openChatDB().then(async (db) => {
-    //   const tx = db.transaction("chats", "readonly");
-    //   const store = tx.objectStore("chats");
 
-    //   console.log("✅ Available indexes:", [...store.indexNames]);
-
-    //   // Make sure 'time' index was created correctly
-    //   const index = store.index("time");
-
-    //   const result = await new Promise((resolve, reject) => {
-    //     const req = index.getAll(); // Gets all records sorted by 'time'
-    //     req.onsuccess = () => resolve(req.result);
-    //     req.onerror = () => reject(req.error);
-    //   });
-
-    //   // Log all chat messages with time
-    //   console.log("✅ All chats sorted by time:");
-    //   console.log(result);
-    //   result.forEach(chat => {
-    //     console.log(`[${chat.time}] ${chat.sender.name}: ${chat.message}`);
-    //   });
-    // });
     async function waitDb() {
       await chatDB2.init();
+      await chatDetailDb.init();
+      await userDb.init();
+    }
+    async function newusers() {
+         users.map(async (user)=>{
+               return  await userDb.addUser(user);
+         })
     }
     waitDb();
+    newusers();
 
 
   }, [])
@@ -131,7 +122,7 @@ function App() {
           </div>
         </div>
       )}
-      {isWant && <AskToChat setCreRoom={setCreRoom} />}
+      {isWant && <AskToChat setCreRoom={setCreRoom} creRoom={creRoom} userB={selectedUser} userA={currentUser}/>}
 
 
       {/* 1. Chat User Selector */}
