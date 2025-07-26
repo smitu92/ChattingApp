@@ -4,6 +4,7 @@ import cors from 'cors';
 import http from 'http';
 import { Server } from 'socket.io';
 import users from "../SocketIoTut/public/user.js";
+import { userDb } from "../SocketIoTut/IndexDb/user.js";
 
 
 const app = express();
@@ -28,16 +29,13 @@ io.on('connection', (socket) => {
     console.log(`userId of connected user ${socket.id}`);
 
     socket.on("send_message", (data) => {
-        const userExists = users.filter((e) => e._id === data.receiver._id);
+        //  const users =Promiseall(userDb.getUsers());
+        //  console.log(users);
         console.log("hello i am backend");
-        if (userExists) {
+        
             console.log("📨 Received:", data);
             io.emit("receive_message", data);
-        }
-        else {
-            console.log("something went wrong");
-        }
-
+    
     });
 
     socket.on("disconnect", () => {

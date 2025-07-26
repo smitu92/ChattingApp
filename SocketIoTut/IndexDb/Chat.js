@@ -30,30 +30,35 @@ export const chatDB2 = {
     async init() {
         return new Promise((resolve, reject) => {
 
-            const request = indexedDB.open("messages", 3);
+            const request = indexedDB.open("messages", 4);
             request.onupgradeneeded = (event) => {
-                const db = event.target.result;this
+                const db = event.target.result;
 
                 if (!db.objectStoreNames.contains("messages")) {
-                    const store = db.createObjectStore("messages", { keyPath: "id", autoIncrement: true });
-                    store.createIndex("sender.id", "sender.id", { unique: false });
-                    store.createIndex("receiver.id", "receiver.id", { unique: false });
-                    store.createIndex("time", "time", { unique: false });
+                    const store = db.createObjectStore("messages", { keyPath: "_id",});
+                    // store.createIndex("sender.id", "sender.id", { unique: false });
+                    // store.createIndex("receiver.id", "receiver.id", { unique: false });
+                    store.createIndex("timeStamp", "timeStamp", { unique: false });
+                    store.createIndex("chatRoomId", "chatRoomId", { unique: false });
                 } else {
                     const store = request.transaction.objectStore("messages");
-                    if (!store.indexNames.contains("sender.id")) {
-                        store.createIndex("sender.id", "sender.id", { unique: false });
+                    // if (!store.indexNames.contains("sender.id")) {
+                    //     store.createIndex("sender.id", "sender.id", { unique: false });
+                    // }
+                   
+
+                    // if (!store.indexNames.contains("receiver.id")) {
+                    //     store.createIndex("receiver.id", "receiver.id", { unique: false });
+                    // }
+                
+                    if (!store.indexNames.contains("timeStamp", "timeStamp")) {
+                        store.createIndex("timeStamp", "timeStamp", { unique: false });
+
                     }
-                    if (!store.indexNames.contains("senderId")) {
-                        store.createIndex("senderId", "senderId", { unique: false });
+                    if (!store.indexNames.contains("chatRoomId", "chatRoomId")) {
+                        store.createIndex("chatRoomId", "chatRoomId", { unique: false });
                     }
 
-                    if (!store.indexNames.contains("receiver.id")) {
-                        store.createIndex("receiver.id", "receiver.id", { unique: false });
-                    }
-                    if (!store.indexNames.contains("time")) {
-                        store.createIndex("time", "time", { unique: false });
-                    }
                     console.log(store);
                 }
             };
@@ -67,13 +72,22 @@ export const chatDB2 = {
         });
     },
 
-    addMessage(message) {
+   async addMessage(message) {
+        if (!this.db) {
+            await this.init();
+        }
         return new Promise((resolve, reject) => {
             const tx = this.db.transaction("messages", "readwrite");
             const store = tx.objectStore("messages");
             const req = store.add(message);
 
-            req.onsuccess = () => resolve(req.result);
+            req.onsuccess = () => {
+                    const id=req.result;
+                    const result={...message,_id:id}
+                        resolve(result);
+
+            }
+                
             req.onerror = (e) => reject("Add Error: " + e.target.error);
         });
     },
@@ -105,15 +119,35 @@ export const chatDB2 = {
             store.openCursor().onerror = (e) => reject("Cursor Error: " + e.target.error);
         });
     },
-    getIndexMessages( indexName,value) {
+  async  getAllIndex( indexName) {
+          if (!this.db) {
+            await this.init();
+        }
         return new Promise((resolve, reject) => {
             const tx = this.db.transaction("messages", "readonly");
             const store = tx.objectStore("messages");
             const index = store.index(indexName);
-            const req=index.getAll(value)
+            const req=index.getAll()
             req.onsuccess = () => { 
                 // console.log("it is oggy:",req.error);
                 return resolve(req.result); }
+            req.onerror = (e) => reject("Something went wrong when we were finding ${indexName}", e.target.error);
+        })
+
+    },
+     async  getAllIndexMessages( indexName,value) {
+          if (!this.db) {
+            await this.init();
+        }
+        return new Promise((resolve, reject) => {
+            const tx = this.db.transaction("messages", "readonly");
+            const store = tx.objectStore("messages");
+            const index = store.index(indexName);
+            const req=index.get(value);
+            console.log(req);
+            req.onsuccess = () => { 
+                // console.log("it is oggy:",req.error);
+                return resolve(req.result) }
             req.onerror = (e) => reject("Something went wrong when we were finding ${indexName}", e.target.error);
         })
 

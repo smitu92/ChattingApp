@@ -3,5 +3,8 @@
     "@tailwindcss/vite": "^4.1.11",
     "socket.io": "^4.8.1",
     "tailwindcss": "^4.1.11"
+  },
+  "devDependencies": {
+    "plop": "^4.0.1"
   }
 }
