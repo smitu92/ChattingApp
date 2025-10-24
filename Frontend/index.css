@@ -1,0 +1,42 @@
+@import "tailwindcss";
+
+html, body, #root { height: 100%; }
+body {
+  background: radial-gradient(1100px 900px at 20% 25%, #b8e0de 0 45%, #fdf3e6 46% 100%);
+  color: #252525;
+  overflow-x: hidden;
+}
+
+/* helpful utilities (optional) */
+.retro-card {
+  @apply rounded-3xl border-2 border-black shadow-[10px_12px_0_rgba(0,0,0,0.25)] bg-white;
+}
+
+/* Custom Component Classes */
+.avatar-uploader-container {
+  @apply flex flex-col items-center justify-center h-screen;
+}
+
+.file-drop-area {
+  @apply relative w-64 h-64 md:w-80 md:h-80 rounded-full flex items-center justify-center bg-[#b2feeb] shadow-xl border-4 border-[#E0E0E0];
+}
+
+.upload-text {
+  @apply text-gray-500 text-sm;
+}
+
+.file-name-text {
+  @apply text-[#3A5243] font-semibold mb-2;
+}
+
+.progress-text {
+  @apply text-[#3A5243] font-bold mt-4;
+}
+
+.upload-button {
+  @apply px-6 py-2 bg-[#6B9080] text-white font-bold rounded-full shadow-lg transition-colors hover:bg-[#3A5243];
+}
+
+.change-file-button {
+  @apply mt-6 text-[#6B9080] hover:underline;
+}
