@@ -1,15 +1,16 @@
-import { useEffect } from "react"
-import useAppStore from "../../store/appStore.js";
+// src/components/ZustandTest.jsx
+import React, { useEffect } from "react";
+import { useTestStore } from "../../store/useTestStore";
+import { useAppStore } from "../../store/appStore.js";
+import axios from "axios";
 
- export default function Testing() {
-    const user=useAppStore((s)=>s.user);
-    console.log(user);
-    useEffect(()=>{
-        console.log("this is testing and this are user details:",user);
-    },[user])
-    return (<div>
 
-        {user};
-
-    </div>)
+export default function TestALLUser() {
+        axios.get("http://localhost:2001/test/users").then((res)=>{
+              console.log(res);
+        })
+  return (
+   <>
+   </>
+  )
 }

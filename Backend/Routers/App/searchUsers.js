@@ -22,8 +22,9 @@ router.post('/search',async (req,res)=>{
                 console.log(usernames);
                 const fuse=new Fuse(usernames,fuseOptions);
                 const r= fuse.search(searchpar);
+                console.log(typeof(r));
                 console.log("r:",r);
-                return res.status(200).json({messages:"successfully search is complated",ok:true,usernames:r});
+                return res.status(200).json({messages:"successfully search is complated",ok:true,r});
 
             } catch (e) {
                   console.error("this is error from search endpoint");

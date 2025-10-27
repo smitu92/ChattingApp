@@ -1,16 +1,17 @@
 import { useEffect } from "react"
 import { useNavigate } from "react-router-dom"
-import useAppStore from "../../store/appStore.js";
+
 import requestForAccT from "../../../services/Auth/userCall.js";
 import insertData from "../../../services/offline/controllers/add.js";
 import userIdx from "../../db/dexieDbs/userDB.js";
 import Dexie from "dexie";
+import { useAppStore } from "../../store/appStore.js";
 
 
 export default function Auth_callBack() {
     const nav=useNavigate();
-    const setAccessToken=useAppStore((state)=>state.setAccessToken);
-    const setUser=useAppStore((state)=>state.setUser);
+    const setAccessToken= useAppStore((state)=>state.setAccessToken);
+    const setUser= useAppStore((state)=>state.setUser);
     useEffect(() => {
 
         (async () => {

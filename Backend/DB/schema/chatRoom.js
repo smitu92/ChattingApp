@@ -1,24 +1,18 @@
 import mongoose from "mongoose";
 
 const chatRoomSchema = new mongoose.Schema({
-  participants: [
-    {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "User",
-      required: true,
-    },
-  ],
-  lastMessage: {
-    type: String, // or `ref: 'Message'` if you want to populate message object
-  },
-  lastUpdated: {
-    type: Date,
-    default: Date.now,
-  },
-  created:{
-    type:Date,
-    default:Date.now
-  }
+   _id: String,  // Or ObjectId
+    participants: [String],  // Array of user IDs [userId1, userId2]
+    participantHash: String, // NEW: Sorted hash for quick lookup
+    isGroup: { type: Boolean, default: false },
+    createdAt: Date,
+    updatedAt: Date,
+    lastMessage: {
+        text: String,
+        timestamp: Date
+    }
 });
+chatRoomSchema.index({ participants: 1 });  // Index on participants array
+chatRoomSchema.index({ participantHash: 1 }, { unique: true });  // Unique hash index
 
-export const ChatRoom = mongoose.model("ChatRoom", chatRoomSchema);
+export const ChatRoomMongo = mongoose.model("ChatRoom", chatRoomSchema);

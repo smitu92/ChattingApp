@@ -1,10 +1,11 @@
 import { useEffect } from "react";
 import pkceSetup from "../../utils/pkceSetup";
-import useAppStore from "../../store/appStore";
+// import useAppStore from "../../store/appStore";
+import { useAppStore } from "../../store/appStore";
 
 
 export default function Login() {
-    const setAccessToken=useAppStore((state)=>state.setAccessToken);
+    const setAccessToken= useAppStore((state)=>state.setAccessToken);
 
     useEffect(() => {
         (async () => {
