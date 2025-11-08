@@ -2,7 +2,7 @@ import { useEffect } from "react"
 import { useNavigate } from "react-router-dom"
 
 import requestForAccT from "../../../services/Auth/userCall.js";
-import insertData from "../../../services/offline/controllers/add.js";
+import insertData from "../../../services/controllers/offline/add.js";
 import userIdx from "../../db/dexieDbs/userDB.js";
 import Dexie from "dexie";
 import { useAppStore } from "../../store/appStore.js";

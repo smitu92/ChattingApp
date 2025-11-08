@@ -19,7 +19,12 @@ const chatUserSchema=new mongoose.Schema({
     },
     contacts:{
         type:Array
-    }
+    },
+    email: { type: String, required: true }, 
+    firstName: { type: String, default: '' }, 
+    lastName: { type: String, default: '' }, 
+    bio: { type: String, default: '' }, 
+    isTestUser: { type: Boolean, default: false }
 
 });
 

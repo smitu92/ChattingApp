@@ -530,7 +530,7 @@
 // Profile.jsx - COMPLETE WITH IMAGE HELPERS
 import React, { useState, useEffect, useRef } from "react";
 import { useAppStore } from "../../store/appStore";
-import  updateData  from "../../../services/offline/controllers/updated";
+import  updateData  from "../../../services/controllers/offline/updated";
 import  userIdx  from "../../db/dexieDbs/userDB";
 import { compressAndConvertToBase64, validateImageFile } from "../../utils/imageHelpers";
 

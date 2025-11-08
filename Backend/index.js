@@ -1,11 +1,14 @@
 import express from 'express';
-import authRoute from "./Routers/Auth/signup2.0/webhook.js"
+import authRoute from "./routers/Auth/signup2.0/webhook.js"
 import Main from './DB/index.js';
 import { jsonWithRaw } from './middleware/raw.js';
 import cors from 'cors';
-import UploadImageRoute from './Routers/upload/imageupload.js'
-import searchRoute from './Routers/App/searchUsers.js'
-import testRouters from './Routers/test.js';
+import UploadImageRoute from './routers/upload/imageupload.js'
+import searchRoute from './routers/App/searchUsers.js'
+import testRouters from './routers/test.js';
+import webhookRoutes from './routers/webhook.routers.js'
+import testingRoutes from './routers/testing.routers.js'
+
 const app=express();
 
 var whitelist = [
@@ -55,7 +58,8 @@ app.use("/",slashRoutes);
 app.use("/auth",authRoute);
 app.use("/upload",UploadRouter);
 app.use("/test",testRouters);
-
+app.use('/api/webhooks', webhookRoutes)
+app.use('/api/test', testingRoutes)
 
 app.listen(2001,()=>{
         console.log("chat App is started on 2001");
